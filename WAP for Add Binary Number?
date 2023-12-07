@@ -1,0 +1,83 @@
+
+import java.util.*;
+
+public class Source {
+
+   static String generatePrintBinary(int n) {
+
+       if (n == 0) {
+           String s = "0";
+           return s;
+       } else {
+           // Create an empty queue of strings
+           Queue<String> queue = new LinkedList<String>();
+
+           // Enqueue the first binary number
+           queue.add("1");
+
+           for (int i = 0; i < n - 1; i++) {
+
+               // print the front of queue
+               String s1 = queue.peek();
+               queue.remove();
+               // Store s1 before changing it
+               String s2 = s1;
+
+               // Append "0" to s1 and enqueue it
+               queue.add(s1 + "0");
+
+               // Append "1" to s2 and enqueue it. Note that s2 contains
+               // the previous front
+               queue.add(s2 + "1");
+           }
+           String st = queue.peek();
+           return st;
+       }
+   }
+
+   public String binaryAddition(String s1, String s2) {
+       if (s1 == "0" && s2 == "0") return "0";
+       else if (s1 == "0") return s2;
+       else if (s2 == "0") return s1;
+       int first = s1.length() - 1;
+       int second = s2.length() - 1;
+       /*Implementing string builder class*/
+       StringBuilder sb = new StringBuilder();
+       int carry = 0;
+       while (first >= 0 || second >= 0) {
+           int sum = carry;
+           if (first >= 0) {
+               sum += s1.charAt(first) - '0';
+               first--;
+           }
+           if (second >= 0) {
+               sum += s2.charAt(second) - '0';
+               second--;
+           }
+           carry = sum >> 1;
+           sum = sum & 1;
+           sb.append(sum == 0 ? '0' : '1');
+       }
+       if (carry > 0)
+           sb.append('1');
+
+       sb.reverse();
+       return String.valueOf(sb);
+   }
+
+
+   public static void main(String[] args) {
+       Source obj = new Source();
+       String first = "";
+       String second = " ";
+       String result = " ";
+       Scanner in = new Scanner(System.in);
+       int n = in.nextInt();
+       first = obj.generatePrintBinary(n);
+       int m = in.nextInt();
+       second = obj.generatePrintBinary(m);
+       result = obj.binaryAddition(first, second);
+       System.out.println(result);
+   }
+}
+
